@@ -1,0 +1,16 @@
+---
+mysql::server::root_password: password
+mysql::server::remove_default_accounts: true
+mysql::server::package_name: MariaDB-Galera-server
+mysql::server::service_name: mysql
+mysql::server::override_options:
+  mysqld:
+    pid-file: /var/lib/mysql/mysql.pid
+    binlog_format: ROW
+    wsrep_provider: /usr/lib64/galera/libgalera_smm.so
+    wsrep_cluster_address: "gcomm://mysql01.puppeels.mylezeem.com,mysql02.puppeels.mylezeem.com,mysql03.puppeels.mylezeem.com?pc.wait_prim=no"
+    wsrep_cluster_name: 'galera_cluster'
+    wsrep_node_address: "%{::ipaddress}"
+    wsrep_node_name: "%{::hostname}"
+    wsrep_sst_method: rsync
+    wsrep_sst_auth: sst_user:password
